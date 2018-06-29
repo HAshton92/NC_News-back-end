@@ -77,4 +77,34 @@ describe("nc_news", () => {
         });
     });
   });
+  describe.only("/api/comments/:comment_id", () => {
+    it("PUT responds with status 201 and a comment object with a changed vote", () => {
+      return request
+        .put(`/api/comments/${commentDocs[0]._id}?vote=up`)
+        .expect(201)
+        .then(res => {
+          expect(res.body.comment.votes).to.equal(8);
+        });
+    });
+    it("DELETE responds with status 202 and message to confirm deletion", () => {
+      return request
+        .delete(`/api/comments/${commentDocs[0]._id}`)
+        .expect(202)
+        .then(res => {
+          expect(res.body.msg).to.equal(
+            `Sucessfully deleted comment "${commentDocs[0]._id}"`
+          );
+        });
+    });
+    it("DELETE responds with status 404 and a message saying the page was not found when passed a nonexistant id", () => {
+      return request
+        .delete(`/api/comments/${userDocs[0]._id}`)
+        .expect(400)
+        .then(res => {
+          expect(res.body.message).to.equal(
+            `Bad request, could not find comment "${userDocs[0]._id}`
+          );
+        });
+    });
+  });
 });

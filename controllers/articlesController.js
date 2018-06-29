@@ -3,7 +3,7 @@ const { Article, User } = require("../models/index");
 const getArticles = (req, res, next) => {
   Article.find()
     .then(articles => {
-      res.send({ articles });
+      res.status(200).send({ articles });
     })
     .catch(next);
 };
@@ -12,7 +12,7 @@ const getArticleById = (req, res, next) => {
   const { article_id } = req.params;
   Article.findById(article_id)
     .then(article => {
-      res.send({ article });
+      res.status(200).send({ article });
     })
     .catch(next);
 };
@@ -22,7 +22,7 @@ const getArticlesByTopic = (req, res, next) => {
   Article.find({ belongs_to: topic_slug })
     .then(articles => {
       articles.length
-        ? res.send({ articles })
+        ? res.status(200).send({ articles })
         : next({
             status: 404,
             msg: `No articles found for topic \"${topic_slug}\"`

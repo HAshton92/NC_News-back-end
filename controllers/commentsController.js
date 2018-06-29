@@ -5,7 +5,7 @@ const getCommentsByArticle = (req, res, next) => {
   Comment.find({ belongs_to: article_id })
     .then(comments => {
       comments.length
-        ? res.send({ comments })
+        ? res.status(200).send({ comments })
         : next({
             status: 404,
             msg: `No comments found for article ID '${article_id}'`
@@ -64,18 +64,18 @@ const voteOnComment = (req, res, next) => {
 
 const deleteComment = (req, res, next) => {
   const { comment_id } = req.params;
-  Comment.findByIdAndRemove(comment_id)
-    .then(comment => {
-      if (comment === null)
-        next({
-          status: 400,
-          msg: `Bad request, could not find comment "${comment_id}`
-        });
+  Comment.findByIdAndRemove(comment_id).then(comment => {
+    console.log(comment);
+    if (comment !== null) {
       res
         .status(202)
         .send({ msg: `Sucessfully deleted comment "${comment_id}"` });
-    })
-    .catch(next);
+    } else
+      next({
+        status: 400,
+        msg: `Bad request, could not find comment "${comment_id}`
+      }).catch(next);
+  });
 };
 
 module.exports = {
