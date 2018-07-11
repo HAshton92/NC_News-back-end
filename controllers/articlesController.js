@@ -42,7 +42,7 @@ const addArticleToTopic = (req, res, next) => {
       user === null
         ? next({
             status: 400,
-            msg: `No user found for id "${req.body.created_by}"`
+            msg: `No user found for username "${req.body.created_by}"`
           })
         : (req.body.created_by = user._id);
       const { topic_slug } = req.params;

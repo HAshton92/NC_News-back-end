@@ -23,9 +23,9 @@ app.use((err, req, res, next) => {
   if (err.name === "CastError")
     res
       .status(400)
-      .send({ msg: `Bad request : ${err.value} is not a valid ID` });
+      .send({ message: `Bad request : ${err.value} is not a valid ID` });
   else if (err.name === "ValidationError")
-    res.status(400).send({ msg: `Bad request : ${err.msg}` });
+    res.status(400).send({ message: `Bad request : ${err.msg}` });
   else if (err.status) res.status(err.status).send({ message: err.msg });
   else res.status(500).send({ message: "Internal server error" });
 });

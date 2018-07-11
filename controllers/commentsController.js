@@ -46,7 +46,7 @@ const voteOnComment = (req, res, next) => {
   if (vote !== "up" && vote !== "down")
     return next({
       status: 400,
-      message: `Bad request; vote must be up or down, "${vote}" is invalid`
+      msg: `Bad request; vote must be up or down, "${vote}" is invalid`
     });
   let change = 0;
   vote === "up" ? (change += 1) : (change += -1);
@@ -57,6 +57,12 @@ const voteOnComment = (req, res, next) => {
     { new: true }
   )
     .then(comment => {
+      if (comment === null) {
+        return next({
+          status: 400,
+          msg: `Bad request : ${comment_id} is not a valid ID`
+        });
+      }
       res.status(201).send({ comment });
     })
     .catch(next);
