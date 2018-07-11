@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const apiRouter = require("./routes/api");
 const bodyParser = require("body-parser");
 const app = express();
-const { DB_URL } = require("./config");
+process.env.NODE_ENV === "production"
+  ? (DB_URL = process.env.DB_URL)
+  : ({ DB_URL } = require("./config"));
 mongoose.connect(DB_URL).then(() => {
   console.log(`connected to the ${DB_URL}...`);
 });
