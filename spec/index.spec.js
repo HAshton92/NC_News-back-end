@@ -131,7 +131,7 @@ describe("nc_news", () => {
         });
     });
   });
-  describe.only("/api/comments/:comment_id", () => {
+  describe("/api/comments/:comment_id", () => {
     it("PUT responds with a status code of 201 and a comment object with a changed vote", () => {
       return request
         .put(`/api/comments/${commentDocs[0]._id}?vote=up`)
