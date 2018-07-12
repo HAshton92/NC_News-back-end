@@ -2,13 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const apiRouter = require("./routes/api");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
-process.env.NODE_ENV === "production"
-  ? (DB_URL = process.env.DB_URL)
-  : ({ DB_URL } = require("./config"));
+const { DB_URL } = require("./config");
 mongoose.connect(DB_URL).then(() => {
   console.log(`connected to the ${DB_URL}...`);
 });
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
