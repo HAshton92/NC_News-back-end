@@ -1,9 +1,9 @@
-const User = require("../models/index");
+const { User } = require("../models/index");
 
 const getUsers = (req, res, next) => {
   User.find()
     .then(users => {
-      res.status(200).send({ users });
+      res.status(200).send(users);
     })
     .catch(next);
 };
