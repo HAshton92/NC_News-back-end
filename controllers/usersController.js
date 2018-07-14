@@ -1,5 +1,13 @@
 const User = require("../models/index");
 
+const getUsers = (req, res, next) => {
+  User.find()
+    .then(users => {
+      res.status(200).send({ users });
+    })
+    .catch(next);
+};
+
 const addUser = (req, res, next) => {
   const user = new User(req.body);
   user
@@ -19,4 +27,4 @@ const getUserById = (req, res, next) => {
     .catch(next);
 };
 
-module.exports = { addUser, getUserById };
+module.exports = { addUser, getUserById, getUsers };
