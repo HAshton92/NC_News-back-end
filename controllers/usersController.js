@@ -10,4 +10,13 @@ const addUser = (req, res, next) => {
     .catch(next);
 };
 
-module.exports = { addUser };
+const getUserById = (req, res, next) => {
+  const { user_id } = req.params;
+  User.findById(user_id)
+    .then(user => {
+      res.status(200).send({ user });
+    })
+    .catch(next);
+};
+
+module.exports = { addUser, getUserById };
