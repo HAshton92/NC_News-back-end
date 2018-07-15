@@ -17,6 +17,33 @@ const getArticleById = (req, res, next) => {
     .catch(next);
 };
 
+const voteOnArticle = (req, res, next) => {
+  const { vote } = req.query;
+  if (vote !== "up" && vote !== "down")
+    return next({
+      status: 400,
+      msg: `Bad request; vote must be up or down, "${vote}" is invalid`
+    });
+  let change = 0;
+  vote === "up" ? (change += 1) : (change += -1);
+  const { article_id } = req.params;
+  Article.findByIdAndUpdate(
+    article_id,
+    { $inc: { votes: change } },
+    { new: true }
+  )
+    .then(article => {
+      if (article === null) {
+        return next({
+          status: 400,
+          msg: `Bad request : ${article_id} is not a valid ID`
+        });
+      }
+      res.status(201).send({ article });
+    })
+    .catch(next);
+};
+
 const getArticlesByTopic = (req, res, next) => {
   const { topic_slug } = req.params;
   Article.find({ belongs_to: topic_slug })
@@ -61,6 +88,7 @@ const addArticleToTopic = (req, res, next) => {
 module.exports = {
   getArticles,
   getArticleById,
+  voteOnArticle,
   getArticlesByTopic,
   addArticleToTopic
 };
