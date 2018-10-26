@@ -14,7 +14,7 @@ This is the back end of the project, built using Express and mongoDB. The follow
 
 [The final product is deployed on Heroku here.](https://nc-news-by-howard.herokuapp.com/)
 
-This back end is utilised by the front end of the project [which is hosted on Heroku here.](https://nc-news-by-howard-frontend.herokuapp.com/)
+This back end is utilised by the front end of the project [which is hosted on Heroku here](https://nc-news-by-howard-frontend.herokuapp.com/) and on [Github here.](http://github.com/HAshton92/NC_News-Front-End)
 
 #### Routes
 
