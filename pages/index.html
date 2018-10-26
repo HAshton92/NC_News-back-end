@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+<title>NC_News API</title>
+</head>
+
+<body>
+  <div id="root">
+    <h1>Welcome to NC_News API</h1>
+    <br/>
+    <br/>
+    <h2>The following endpoints are available...</h2>
+    <br/>
+    <br/>
+    <h3>GET /api/topics</h3>
+    <p>Responds with a status code of 200 and serves an array of all the topics contained in the database.</p>
+    <br/>
+    <br/>
+    <h3>GET /api/topics/:topics_slug/articles</h3>
+    <p>If a valid topic slug is entered, this responds with a status code of 200 and an array of all the articles which match
+      the slug.
+    </p>
+    <br/>
+    <br/>
+    <h3>POST /api/topics/:topics_slug/articles</h3>
+    <p>If a valid article is added in the following format: { title: "string", body: "string", created_by: "string, must match
+      a valid username" } This responds with a status code of 201 and an object showing the article you have just entered,
+      with a property "belongs_to" matching the topic slug in the URL.</p>
+    <br/>
+    <br/>
+    <h3>GET /api/articles</h3>
+    <p>Responds with a status code of 200 and serves an array of all the articles contained in the database.</p>
+    <br/>
+    <br/>
+    <h3>GET /api/articles/:article_id</h3>
+    <p>If a valid article id is entered, this responds with a status code of 200 and an object containing the corresponding
+      article.</p>
+    <br/>
+    <br/>
+    <h3>PUT /api/articles/:article_id?vote=up/down</h3>
+    <p>Responds with a status code of 201 and and object for the corresponding article, showing the votes have been incremented
+      or decremented by 1, depending on the URL query.</p>
+    <br/>
+    <br/>
+    <h3>GET /api/articles/:article_id/comments</h3>
+    <p>If comments exist for the article, this will respond with a status code of 200, and an array of the comments.</p>
+    <br/>
+    <br/>
+    <h3>POST /api/articles/:article_id/comments</h3>
+    <p>If a valid comment is added in the following format: { comment: "string", created_by: "string, must match a valid username"
+      } This responds with a status code of 201 and an object showing the comment you have just entered, with a property
+      "belongs_to" matching the article id in the URL.</p>
+    <br/>
+    <br/>
+    <h3>PUT /api/comments/:comment_id?vote=up/down</h3>
+    <p>Responds with a status code of 201 and and object for the corresponding comment, showing the votes have been incremented
+      or decremented by 1, depending on the URL query.</p>
+    <br/>
+    <br/>
+    <h3>DELETE /api/comments/:comment_id</h3>
+    <p>Responds with a status code of 202 and a message stating that the corresponding comment has been successfully deleted.</p>
+    <br/>
+    <br/>
+    <h3>GET /api/users</h3>
+    <p>Responds with a status code of 200 and serves an array of all the users contained in the database.
+    </p>
+    <br/>
+    <br/>
+    <h3>GET /api/users/:user_id</h3>
+    <p>If a valid user id is entered, this responds with a status code of 200 and an object containing the corresponding user.</p>
+    <br/>
+    <br/>
+  </div>
+
+</body>
+
+</html>

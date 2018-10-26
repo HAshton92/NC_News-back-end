@@ -14,7 +14,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.get("/", (req, res, next) => res.status(200).send("Welcome to NC News"));
+app.get("/", (req, res) => res.render("pages/index"));
 
 app.use("/api", apiRouter);
 
