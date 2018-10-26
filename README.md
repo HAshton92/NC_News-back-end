@@ -1,138 +1,111 @@
-## Northcoders News API
+## Northcoders News - back end
 
-### Background
+Northcoders News is a social news aggregation, web content rating, and discussion website. Think something along the lines of [Reddit](https://www.reddit.com/).
 
-We will be building the API which to use in the Northcoders News Sprint during the Front End block of the course.
+Northcoders News has articles which are divided into topics. Each article has user curated ratings and can be up or down voted using the API. Users can also add comments about an article. Comments can also be up or down voted. A user can add comments and remove any comments which they have added.
 
-Our database will be MongoDB. Your Mongoose models have been created for you so that you can see what the data should look like.
+This is the back end of the project, built using Express and mongoDB. The following dependencies are required to run the project
 
-We have also built a functioning API at http://northcoders-news-api.herokuapp.com/.
+    body-parser: ^1.15.2,
+    cors: ^2.8.4,
+    ejs: ^2.6.1,
+    express: ^4.16.3,
+    mongoose: ^5.1.6
 
-Look closely at the response you get for each route on http://northcoders-news-api.herokuapp.com/ You will notice that we also send data such as the comment count for each article. You will need to think carefully about how to do this in your API.
+[The final product is deployed on Heroku here.](https://nc-news-by-howard.herokuapp.com/)
 
-### Mongoose Documentation
+This back end is utilised by the front end of the project [which is hosted on Heroku here](https://nc-news-by-howard-frontend.herokuapp.com/) and on [Github here.](http://github.com/HAshton92/NC_News-Front-End)
 
-The below are all model methods that you call on your models.
-
-* [find](http://mongoosejs.com/docs/api.html#model_Model.find)
-* [findOne](http://mongoosejs.com/docs/api.html#model_Model.findOne)
-* [findOneAndUpdate](http://mongoosejs.com/docs/api.html#model_Model.findOneAndUpdate)
-* [findOneAndRemove](http://mongoosejs.com/docs/api.html#model_Model.findOneAndRemove)
-* [findById](http://mongoosejs.com/docs/api.html#model_Model.findById)
-* [findByIdAndUpdate](http://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate)
-* [findByIdAndRemove](http://mongoosejs.com/docs/api.html#model_Model.findByIdAndRemove)
-* [update](http://mongoosejs.com/docs/api.html#model_Model.update)
-
-There are also some methods that can be called on the documents that get returned. These are:
-
-* [remove](http://mongoosejs.com/docs/api.html#model_Model-remove)
-* [save](http://mongoosejs.com/docs/api.html#model_Model-save)
-* [count](http://mongoosejs.com/docs/api.html#model_Model.count)
-
-### Step 1 - Seeding
-
-Data has been provided for both testing and development environments so you will need to write a seed function to seed your database. You should think about how you will write your seed file to use either test data or dev data depending on the environment that you're running in.
-
-1.  You will need to seed the topics, followed by the articles and the users. Each article should belong to a topic, referenced by a topic's slug property. Each article should also have comments associated with it. Each comment should have been created by a user (referenced by their \_id property) and should also belong to a specific article (referenced by its \_id property too).
-
-### Step 2 - Building and Testing
-
-1.  Build your Express App
-2.  Mount an API Router onto your app
-3.  Define the routes described below
-4.  Define controller functions for each of your routes
-5.  Use proper project configuration from the offset, being sure to treat development and test differently.
-6.  Test each route as you go. Remember to test the happy and the unhappy paths! Make sure your error messages are helpful and your error status codes are chosen correctly. Remember to seed the test database using the seeding function and make the saved data available to use within your test suite.
-7.  Once you have all your routes start to tackle responding with the vote and comment counts on article requests like this http://northcoders-news-api.herokuapp.com/api/articles
-
-**HINT** Make sure to drop and reseed your test database with every test. This will make it much easier to keep track of your data throughout. In order for this to work, you are going to need to keep track of the MongoIDs your seeded docs have been given. In order to do this, you might want to consider what your seed file returns, and how you can use this in your tests.
-
-### Routes
-
-
-Your server should have the following end-points:
-```http
-GET /api
-```
-Serves an HTML page with documentation for all the available endpoints
-
+#### Routes
 
 ```http
 GET /api/topics
 ```
 
-Get all the topics
+Responds with a status code of 200 and serves an array of all the topics contained in the database.
 
 ```http
-GET /api/topics/:topic_slug/articles
+GET /api/topics/:topics_slug/articles
 ```
 
-Return all the articles for a certain topic
+If a valid topic slug is entered, this responds with a status code of 200 and an array of all the articles which match the slug.
 
 ```http
-POST /api/topics/:topic_slug/articles
+POST /api/topics/:topics_slug/articles
 ```
 
-Add a new article to a topic. This route requires a JSON body with title and body key value pairs
-e.g: `{ "title": "new article", "body": "This is my new article content"}`
+If a valid article is added in the following format:
+
+{ title: "string", body: "string", created_by: "string, must match a valid username" }
+
+This responds with a status code of 201 and an object showing the article you have just entered, with a property "belongs_to" matching the topic slug in the URL.
 
 ```http
 GET /api/articles
 ```
 
-Returns all the articles
+Responds with a status code of 200 and serves an array of all the articles contained in the database.
 
 ```http
 GET /api/articles/:article_id
 ```
 
-Get an individual article
+If a valid article id is entered, this responds with a status code of 200 and an object containing the corresponding article.
+
+```http
+PUT /api/articles/:article_id?vote=up/down
+```
+
+Responds with a status code of 201 and and object for the corresponding article, showing the votes have been incremented or decremented by 1, depending on the URL query.
 
 ```http
 GET /api/articles/:article_id/comments
 ```
 
-Get all the comments for a individual article
+If comments exist for the article, this will respond with a status code of 200, and an array of the comments.
 
 ```http
 POST /api/articles/:article_id/comments
 ```
 
-Add a new comment to an article. This route requires a JSON body with a comment key and value pair
-e.g: `{"comment": "This is my new comment"}`
+If a valid comment is added in the following format:
+
+{ comment: "string", created_by: "string, must match a valid username" }
+
+This responds with a status code of 201 and an object showing the comment you have just entered, with a property "belongs_to" matching the article id in the URL.
 
 ```http
-PUT /api/articles/:article_id
+PUT /api/comments/:comment_id?vote=up/down
 ```
 
-Increment or Decrement the votes of an article by one. This route requires a vote query of 'up' or 'down'
-e.g: `/api/articles/:article_id?vote=up`
-
-```http
-PUT /api/comments/:comment_id
-```
-
-Increment or Decrement the votes of a comment by one. This route requires a vote query of 'up' or 'down'
-e.g: `/api/comments/:comment_id?vote=down`
+Responds with a status code of 201 and and object for the corresponding comment, showing the votes have been incremented or decremented by 1, depending on the URL query.
 
 ```http
 DELETE /api/comments/:comment_id
 ```
 
-Deletes a comment
+Responds with a status code of 202 and a message stating that the corresponding comment has been successfully deleted.
 
 ```http
-GET /api/users/:username
+GET /api/users
 ```
 
-Returns a JSON object with the profile data for the specified user.
+Responds with a status code of 200 and serves an array of all the users contained in the database.
 
-### Step 3 - Hosting
+```http
+GET /api/users/:user_id
+```
 
-Once you are happy with your seed/dev file, prepare your project for production. You will need to seed the development data to mLab, and host the API on Heroku. If you've forgotten how to do this, you may want to look at this tutorial! https://www.sitepoint.com/deploy-rest-api-in-30-mins-mlab-heroku/
+If a valid user id is entered, this responds with a status code of 200 and an object containing the corresponding user.
 
-### Step 4 - Preparing for your review and portfolio
+#### Error handling
 
-Finally, you should write a README for this project (and remove this one). The README should be broken down like this: https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
+Unrecognised URL inputs respond with a status code of 404 and serves a message to state the page wasn't found.
 
-It should also include the link where your herokuapp is hosted.
+Bad requests respond with a status code of 400 and a message to state why the input is not valid.
+
+Internal server errors respond with a status code of 500 and a message to state an internal server error has occured.
+
+#### Testing
+
+All the routes are fully tested using Chai and Supertest. This can be seen in the spec folder, or using the `npm test` command after forking and cloning this repo.
