@@ -8,6 +8,7 @@ This is the back end of the project, built using Express and mongoDB. The follow
 
     body-parser: ^1.15.2,
     cors: ^2.8.4,
+    ejs: ^2.6.1,
     express: ^4.16.3,
     mongoose: ^5.1.6
 
